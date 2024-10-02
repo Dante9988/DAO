@@ -15,12 +15,13 @@ contract DAO {
         string name;
         uint amount;
         address payable recipient;
-        uint32 votes;
+        uint votes;
         bool finalized;
     }
 
     uint32 public proposalCount;
     mapping(uint32 => Proposal) public proposals;
+    mapping(address => mapping(uint32 => bool)) votes;
 
     event Propose(
         uint32 id,
@@ -29,8 +30,13 @@ contract DAO {
         address creator
     );
 
+    event Vote(
+        uint32 id,
+        address investor
+    );
+
     modifier onlyInvestor {
-        require(Token(token).balanceOf(msg.sender) > 0, 'Must be token HODLER.');
+        require(token.balanceOf(msg.sender) > 0, 'Must be token HODLER.');
         _;
     }
 
@@ -64,5 +70,18 @@ contract DAO {
         );
         
         emit Propose(proposalCount, _amount, _recipient, msg.sender);
+    }
+
+    function vote(uint32 _id) external onlyInvestor {
+        // fetch proposal from mapping by id
+        Proposal storage proposal = proposals[_id];
+        require(!votes[msg.sender][_id], 'Already voted.');
+        // update votes
+        proposal.votes += token.balanceOf(msg.sender);
+
+        // track that user voted
+        votes[msg.sender][_id] = true;
+        // emit event
+        emit Vote(_id, msg.sender);
     }
 }
