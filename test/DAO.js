@@ -169,4 +169,104 @@ describe('DAO', () => {
 
     })
 
+    describe('Governance', () => {
+
+        let transaction, result;
+
+        describe('Success', () => {
+            beforeEach(async () => {
+                // create proposal 
+                transaction = await dao.connect(investor1).createProposal('Proposal 1', ether(100), recipient.address)
+                result = await transaction.wait();
+
+                // vote
+                transaction = await dao.connect(investor1).vote(1)
+                result = await transaction.wait();
+
+                transaction = await dao.connect(investor2).vote(1)
+                result = await transaction.wait();
+
+                transaction = await dao.connect(investor3).vote(1)
+                result = await transaction.wait();
+
+                // Finalize proposal
+                transaction = await dao.connect(investor1).finalizeProposal(1)
+                result = await transaction.wait()
+            })
+
+            it('transfers funds to ricipient', async () => {
+                expect(await ethers.provider.getBalance(recipient.address)).to.eq(tokens(10100))
+            })
+
+            it('updates the proposal to finalized', async () => {
+                const proposal = await dao.proposals(1)
+                expect(proposal.finalized).to.eq(true);
+            })
+
+            it('emits finalize event', async () => {
+                await expect(transaction).to.emit(dao, 'Finalize').withArgs(1);
+            })
+        })
+
+        describe('Failure', () => {
+            beforeEach(async () => {
+                // create proposal 
+                transaction = await dao.connect(investor1).createProposal('Proposal 1', ether(100), recipient.address)
+                result = await transaction.wait();
+
+                // vote
+                transaction = await dao.connect(investor1).vote(1)
+                result = await transaction.wait();
+
+                transaction = await dao.connect(investor2).vote(1)
+                result = await transaction.wait();
+            })
+
+            it('rejects proposal if already finalized', async () => {
+                // Finalize proposal
+                transaction = await dao.connect(investor3).vote(1)
+                result = await transaction.wait()
+
+                transaction = await dao.connect(investor1).finalizeProposal(1)
+                result = await transaction.wait()
+                await expect(dao.connect(investor1).finalizeProposal(1)).to.be.revertedWith('Proposal already finalized.');
+            })
+
+            it('rejects finalization if not enough votes', async () => {
+                await expect(dao.connect(investor1).finalizeProposal(1)).to.be.revertedWith('Must reach quorum to finalize proposal.');
+            })
+
+            it('rejects finalization if non-investor', async () => {
+                transaction = await dao.connect(investor3).vote(1)
+                result = await transaction.wait()
+
+                await expect(dao.connect(user).finalizeProposal(1)).to.be.revertedWith('Must be token HODLER.');
+            })
+
+            it('rejects if smart contract balance is low', async () => {
+                transaction = await dao.connect(investor1).createProposal('Proposal 2', ether(100), recipient.address)
+                result = await transaction.wait();
+
+                // vote
+                transaction = await dao.connect(investor3).vote(1)
+                result = await transaction.wait()
+
+                transaction = await dao.connect(investor1).finalizeProposal(1)
+                result = await transaction.wait()
+
+                transaction = await dao.connect(investor1).vote(2)
+                result = await transaction.wait();
+
+                transaction = await dao.connect(investor2).vote(2)
+                result = await transaction.wait();
+
+                transaction = await dao.connect(investor3).vote(2)
+                result = await transaction.wait()
+
+                await expect(dao.connect(investor1).finalizeProposal(2)).to.be.revertedWith('Contract balance is running low.')
+            })
+        })
+
+    })
+
 })

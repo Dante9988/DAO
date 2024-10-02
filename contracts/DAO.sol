@@ -35,6 +35,10 @@ contract DAO {
         address investor
     );
 
+    event Finalize(
+        uint32 id
+    );
+
     modifier onlyInvestor {
         require(token.balanceOf(msg.sender) > 0, 'Must be token HODLER.');
         _;
@@ -83,5 +87,27 @@ contract DAO {
         votes[msg.sender][_id] = true;
         // emit event
         emit Vote(_id, msg.sender);
+    }
+
+    function finalizeProposal(uint32 _id) external onlyInvestor {
+        // fetch proposal
+        Proposal storage proposal = proposals[_id];
+
+        // Ensure not finalized
+        require(!proposal.finalized, 'Proposal already finalized.');
+
+        // mark as fanilized
+        proposal.finalized = true;
+
+        // check that proposal has enough votes
+        require(proposal.votes >= quorum, 'Must reach quorum to finalize proposal.');
+
+        require(address(this).balance >= proposal.amount, 'Contract balance is running low.');
+
+        // transfer funds
+        (bool sent, ) = proposal.recipient.call{ value: proposal.amount }("");
+        require(sent);
+        // emit events
+        emit Finalize(_id);
     }
 }
