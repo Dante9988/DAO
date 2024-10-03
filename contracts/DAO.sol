@@ -95,14 +95,12 @@ contract DAO {
 
         // Ensure not finalized
         require(!proposal.finalized, 'Proposal already finalized.');
-
-        // mark as fanilized
-        proposal.finalized = true;
-
         // check that proposal has enough votes
         require(proposal.votes >= quorum, 'Must reach quorum to finalize proposal.');
 
         require(address(this).balance >= proposal.amount, 'Contract balance is running low.');
+        // mark as fanilized
+        proposal.finalized = true;
 
         // transfer funds
         (bool sent, ) = proposal.recipient.call{ value: proposal.amount }("");
