@@ -41,7 +41,7 @@ describe('DAO', () => {
         user = accounts[8]
 
         const Token = await ethers.getContractFactory('Token')
-        token = await Token.deploy('Dragon AI', 'DRGN', '1000000')
+        token = await Token.deploy('Dragon AI', 'DRGN', '1100000')
 
         // Creating list of investors
         investors = [
@@ -64,6 +64,9 @@ describe('DAO', () => {
         dao = await DAO.deploy(token.address, '500000000000000000000001')
 
         // 100 ether to DAO treasury for governance
+
+        transaction = await token.connect(deployer).transfer(dao.address, tokens(1000))
+        await transaction.wait()
         await funder.sendTransaction({ to: dao.address, value: ether(100) })
     })
 
@@ -169,6 +172,37 @@ describe('DAO', () => {
 
     })
 
+
+    describe('Voting Against', () => {
+
+        let transaction, result;
+
+        beforeEach(async () => {
+            transaction = await dao.connect(investor1).createProposal('Proposal 1', ether(100), recipient.address)
+            result = await transaction.wait();
+        })
+
+        describe('Success', () => {
+            beforeEach(async () => {
+                transaction = await dao.connect(investor1).voteAgainst(1)
+                result = await transaction.wait();    
+            })
+            it('updates vote against count', async () => {
+                const proposal = await dao.proposals(1)
+                expect(proposal.votesAgainst).to.eq(tokens(200000))
+            })
+
+            it('emits vote against event', async () => {
+                await expect(transaction).to.emit(dao, 'VoteAgainst').withArgs(1, investor1.address);
+            })
+        })
+
+        describe('Failure', () => {
+            
+        })
+
+    })
+
     describe('Governance', () => {
 
         let transaction, result;
@@ -194,8 +228,8 @@ describe('DAO', () => {
                 result = await transaction.wait()
             })
 
-            it('transfers funds to ricipient', async () => {
-                expect(await ethers.provider.getBalance(recipient.address)).to.eq(tokens(10100))
+            it('transfers funds to recipient', async () => {
+                expect(await token.balanceOf(recipient.address)).to.eq(tokens(100))
             })
 
             it('updates the proposal to finalized', async () => {
@@ -211,7 +245,7 @@ describe('DAO', () => {
         describe('Failure', () => {
             beforeEach(async () => {
                 // create proposal 
-                transaction = await dao.connect(investor1).createProposal('Proposal 1', ether(100), recipient.address)
+                transaction = await dao.connect(investor1).createProposal('Proposal 1', tokens(100), recipient.address)
                 result = await transaction.wait();
 
                 // vote
@@ -244,7 +278,7 @@ describe('DAO', () => {
             })
 
             it('rejects if smart contract balance is low', async () => {
-                transaction = await dao.connect(investor1).createProposal('Proposal 2', ether(100), recipient.address)
+                transaction = await dao.connect(investor1).createProposal('Proposal 2', tokens(900), recipient.address)
                 result = await transaction.wait();
 
                 // vote
@@ -253,6 +287,7 @@ describe('DAO', () => {
 
                 transaction = await dao.connect(investor1).finalizeProposal(1)
                 result = await transaction.wait()
+
 
                 transaction = await dao.connect(investor1).vote(2)
                 result = await transaction.wait();

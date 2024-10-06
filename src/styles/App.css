@@ -209,29 +209,24 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
   }
 
-  .treasury-card {
-    background: linear-gradient(135deg, #50a3a2, #007bff);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    color: #ffffff;
-    padding: 2rem;
+  .treasury-card, .quorum-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+  
+  .treasury-content, .quorum-content {
     text-align: center;
   }
   
-  .treasury-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .treasury-title, .quorum-title {
+    font-size: 1.5rem;
+    color: #333;
   }
   
-  .treasury-title {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .treasury-amount {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ffeb3b; /* Bright yellow to make the ETH amount pop */
+  .treasury-amount, .quorum-amount {
+    font-size: 1.25rem;
+    margin-top: 8px;
   }

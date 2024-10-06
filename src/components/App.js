@@ -11,6 +11,7 @@ import WaveBackground from './WaveBackground';
 import InteractiveBackground from './MouseTrail';
 // ABIs: Import your contract ABIs here
 import DAO_ABI from '../abis/DAO.json'
+import TOKEN_ABI from '../abis/Token.json'
 
 // Config: Import your network config here
 import config from '../config.json';
@@ -38,10 +39,11 @@ function App() {
     // Initiate contracts
     const dao = new ethers.Contract(config[chainId].dao.address, DAO_ABI, provider)
     setDao(dao);
-    
+    const token = new ethers.Contract(config[chainId].token.address, TOKEN_ABI)
+
     setTreasuryBalance(
       ethers.utils.formatUnits(
-        await provider.getBalance(dao.address), 18
+        await token.balanceOf(dao.address), 18
       )
     );
 
@@ -95,13 +97,22 @@ function App() {
             <Create provider={provider} dao={dao} setIsLoading={setIsLoading} />
             <hr />
             <div className="treasury-card my-4">
-            <div className="treasury-content">
-              <h3 className="treasury-title">Treasury Balance</h3>
-              <div className="treasury-amount">
-                <strong>{treasuryBalance} ETH</strong>
+              <div className="treasury-content">
+                <h3 className="treasury-title">Treasury Balance</h3>
+                <div className="treasury-amount">
+                  <strong>{treasuryBalance} DRGN</strong>
+                </div>
               </div>
             </div>
-          </div>
+
+            <div className="quorum-card my-4">
+              <div className="quorum-content">
+                <h3 className="quorum-title">Quorum</h3>
+                <div className="quorum-amount">
+                  <strong>{quorum.toString()} votes</strong>
+                </div>
+              </div>
+            </div>
             <hr />
             <Proposals provider={provider} dao={dao} proposals={proposals} quorum={quorum} setIsLoading={setIsLoading} />
           </>

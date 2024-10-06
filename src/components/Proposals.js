@@ -63,7 +63,7 @@
 //                         </td>
 //                     </tr>
 //                 ))}
-                
+
 //             </tbody>
 
 //         </Table>
@@ -72,13 +72,16 @@
 
 // export default Proposals;
 
-import Card from 'react-bootstrap/Card';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import { ethers } from 'ethers';
 import { FaEthereum, FaUser, FaCheckCircle, FaVoteYea } from 'react-icons/fa';
 import { MdPending } from 'react-icons/md';
 
 const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
+
+    const [votedStatus, setVotedStatus] = useState({});
+
     const voteHandler = async (id) => {
         try {
             const signer = await provider.getSigner();
@@ -89,7 +92,12 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
             console.log(error.message);
         }
         setIsLoading(true);
-    }
+
+        setVotedStatus((prevStatus) => ({
+            ...prevStatus,
+            [id]: true,
+        }));
+    };
 
     const finalizeHandler = async (id) => {
         try {
@@ -102,6 +110,25 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
         }
         setIsLoading(true);
     }
+
+    useEffect(() => {
+        const checkVotes = async () => {
+            const signer = provider.getSigner();
+            const address = await signer.getAddress();
+
+            const status = {};
+            for (let i = 0; i < proposals; i++) {
+                const hasVoted = await dao.hasVoted(address, proposals[i].id);
+                console.log('WTF',hasVoted)
+                status[proposals[i].id] = hasVoted;
+            }
+            setVotedStatus(status);
+        };
+
+        if (provider && dao && proposals) {
+            checkVotes();
+        }
+    }, [provider, dao, proposals]);
 
     return (
         <div className='my-4'>
@@ -117,7 +144,7 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
                         </div>
                         <div className="proposal-detail-item">
                             <FaEthereum className="icon" />
-                            <strong>Amount:</strong> {ethers.utils.formatUnits(proposal.amount.toString())} ETH
+                            <strong>Amount:</strong> {ethers.utils.formatUnits(proposal.amount.toString())} DRGN
                         </div>
                         <div className="proposal-detail-item">
                             {proposal.finalized ? <FaCheckCircle className="icon" /> : <MdPending className="icon" />}
@@ -129,9 +156,10 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
                         </div>
                     </div>
                     <div className="proposal-actions">
-                        {!proposal.finalized && (
-                            <Button variant='success' onClick={() => voteHandler(proposal.id)}>Vote</Button>
+                        {!proposal.finalized && !votedStatus[proposal.id] && (
+                            <Button variant='primary' onClick={() => voteHandler(proposal.id)}>Vote</Button>
                         )}
+
                         {!proposal.finalized && proposal.votes > quorum && (
                             <Button variant='danger' onClick={() => finalizeHandler(proposal.id)}>Finalize</Button>
                         )}

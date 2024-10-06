@@ -16,12 +16,14 @@ contract DAO {
         uint amount;
         address payable recipient;
         uint votes;
+        uint votesAgainst;
         bool finalized;
     }
 
     uint32 public proposalCount;
     mapping(uint32 => Proposal) public proposals;
-    mapping(address => mapping(uint32 => bool)) votes;
+    mapping(address => mapping(uint32 => bool)) public votes;
+    mapping(address => mapping (uint32 => bool)) public votesAgainst;
 
     event Propose(
         uint32 id,
@@ -37,6 +39,11 @@ contract DAO {
 
     event Finalize(
         uint32 id
+    );
+
+    event VoteAgainst(
+        uint32 id,
+        address investor
     );
 
     modifier onlyInvestor {
@@ -56,12 +63,13 @@ contract DAO {
 
     // Create proposal
     function createProposal(
-        string memory _name, 
+        string memory _name,
         uint _amount, 
         address payable _recipient    
     ) external onlyInvestor {
-        require(address(this).balance >= _amount, 'Not enough balance in contract to fullfil the proposal.');
-
+        require(bytes(_name).length > 0, 'Description is required.');
+        require(token.balanceOf(address(this)) >= _amount, 'Not enough balance in contract to fullfil the proposal.');
+        
         proposalCount++;
 
         proposals[proposalCount] = Proposal(
@@ -69,6 +77,7 @@ contract DAO {
              _name,
             _amount, 
             _recipient, 
+            0,
             0, 
             false
         );
@@ -89,6 +98,17 @@ contract DAO {
         emit Vote(_id, msg.sender);
     }
 
+    function voteAgainst(uint32 _id) external onlyInvestor {
+        Proposal storage proposal = proposals[_id];
+        require(!votesAgainst[msg.sender][_id], 'Already voted against.');
+
+        proposal.votesAgainst += token.balanceOf(msg.sender);
+
+        votesAgainst[msg.sender][_id] = true;
+
+        emit VoteAgainst(_id, msg.sender);
+    }
+
     function finalizeProposal(uint32 _id) external onlyInvestor {
         // fetch proposal
         Proposal storage proposal = proposals[_id];
@@ -97,15 +117,20 @@ contract DAO {
         require(!proposal.finalized, 'Proposal already finalized.');
         // check that proposal has enough votes
         require(proposal.votes >= quorum, 'Must reach quorum to finalize proposal.');
+        require(proposal.votes > proposal.votesAgainst, 'This proposal in not approved');
 
         require(address(this).balance >= proposal.amount, 'Contract balance is running low.');
         // mark as fanilized
         proposal.finalized = true;
 
         // transfer funds
-        (bool sent, ) = proposal.recipient.call{ value: proposal.amount }("");
+        bool sent  = token.transfer(proposal.recipient, proposal.amount);
         require(sent);
         // emit events
         emit Finalize(_id);
+    }
+
+    function hasVoted(address _voter, uint32 _proposalId) public view returns (bool) {
+        return votes[_voter][_proposalId];
     }
 }
