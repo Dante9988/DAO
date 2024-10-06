@@ -84,7 +84,7 @@ body {
   .proposal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: 1rem; /* Add spacing between buttons */
   }
 
   .input-group-text {
@@ -158,23 +158,19 @@ body {
     transform: scale(1.05);
   }
   
-  .btn-success {
-    background-color: #28a745;
-    border: none;
+  .btn-success, .btn-danger {
+    transition: background-color 0.3s ease-in-out, transform 0.2s;
   }
   
   .btn-success:hover {
     background-color: #218838;
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    border: none;
+    transform: scale(1.05);
   }
   
   .btn-danger:hover {
     background-color: #c82333;
-  }  
+    transform: scale(1.05);
+  }
   
   .navbar {
     background-color: #007bff;

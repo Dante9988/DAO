@@ -48,7 +48,10 @@ async function main() {
     const dao = await hre.ethers.getContractAt('DAO', config[chainId].dao.address)
     console.log(`DAO fetched: ${dao.address}\n`)
 
-    transaction = await funder.sendTransaction({ to: dao.address, value: ether(1000) })
+    const balanceFunder = await funder.getBalance();
+    console.log(`Balance of Funder is: ${balanceFunder}`)
+
+    transaction = await funder.sendTransaction({ to: dao.address, value: ether(1000), gasLimit: 30000000 })
     await transaction.wait();
     console.log(`Send funds to DAO treasury...\n`)
 

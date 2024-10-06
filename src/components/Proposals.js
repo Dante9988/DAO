@@ -144,6 +144,3 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
 
 export default Proposals;
 
-
-
-

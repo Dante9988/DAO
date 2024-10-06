@@ -103,7 +103,7 @@ function App() {
             </div>
           </div>
             <hr />
-            <Proposals provider={provider} dao={dao} proposals={proposals} setIsLoading={setIsLoading} />
+            <Proposals provider={provider} dao={dao} proposals={proposals} quorum={quorum} setIsLoading={setIsLoading} />
           </>
         )}
       </Container>
