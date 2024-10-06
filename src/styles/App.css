@@ -1,0 +1,241 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298, #6dd5ed, #ff6f61, #e66465, #4a90e2, #50a3a2);
+    background-size: 400% 400%;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    animation: enhancedGradientAnimation 15s ease infinite;
+  }
+  
+  @keyframes enhancedGradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes titleGradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .container {
+    padding: 5rem 2rem; /* Add more padding to push content up above the wave */
+    position: relative;
+    z-index: 1; /* Ensure the content appears above the wave */
+  }
+  
+  .card {
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .proposal-card {
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    margin: 1.5rem 0;
+    background-color: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .proposal-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .proposal-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 1rem;
+  }
+  
+  .proposal-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .proposal-detail-item {
+    flex: 1 1 45%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: #343a40;
+  }
+  
+  .proposal-detail-item strong {
+    margin-left: 0.5rem;
+  }
+  
+  .icon {
+    color: #ff6f61; /* Add a vibrant color to match the overall design */
+    font-size: 1.25rem;
+  }
+  
+  .proposal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .input-group-text {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+  }
+
+  .form-control {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
+  }
+  
+  .form-control:focus {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    outline: none;
+  }
+  
+  .table-container {
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+  }
+  
+  .table th, .table td {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .table th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+  }
+  
+  .table td {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .btn {
+    font-weight: bold;
+    padding: 0.5rem 1.5rem;
+    border-radius: 10px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .btn-primary {
+    background-color: #ff6f61;
+    border: none;
+    transition: background-color 0.3s ease-in-out, transform 0.2s;
+  }
+  
+  .btn-primary:hover {
+    background-color: #e66465;
+    transform: scale(1.05);
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+  }  
+  
+  .navbar {
+    background-color: #007bff;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .navbar-brand {
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .navbar-text {
+    color: #fff;
+  }
+
+  .hero-title {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  .hero-title h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff6f61, #ff9a44, #50a3a2, #007bff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleGradientAnimation 6s ease infinite;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .sub-title {
+    font-size: 1.5rem;
+    color: #ff9a44;
+    margin-top: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .treasury-card {
+    background: linear-gradient(135deg, #50a3a2, #007bff);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .treasury-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .treasury-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .treasury-amount {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffeb3b; /* Bright yellow to make the ETH amount pop */
+  }

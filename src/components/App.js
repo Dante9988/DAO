@@ -7,12 +7,14 @@ import Navigation from './Navigation';
 import Create from './Create';
 import Loading from './Loading';
 import Proposals from './Proposals';
-
+import WaveBackground from './WaveBackground';
+import InteractiveBackground from './MouseTrail';
 // ABIs: Import your contract ABIs here
 import DAO_ABI from '../abis/DAO.json'
 
 // Config: Import your network config here
 import config from '../config.json';
+import '../styles/App.css'
 
 function App() {
   const [account, setAccount] = useState(null)
@@ -70,28 +72,43 @@ function App() {
     }
   }, [isLoading]);
 
-  return(
-    <Container>
-      <Navigation account={account} />
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
-      <h1 className='my-4 text-center'>Welcome to Dragon DAO!</h1>
+  return (
+    <>
+      <WaveBackground />
+      <InteractiveBackground />
+      <Container>
+        <Navigation account={account} />
 
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <Create provider={provider} dao={dao} setIsLoading={setIsLoading}/>
-          <hr/>
+        <div className="hero-title text-center">
+          <h1 className='my-4'>Welcome to Dragon DAO!</h1>
+          <p className="sub-title">Empowering Decentralized Decision Making</p>
+        </div>
 
-          <p className='text-center'><strong>Treasury Balance:</strong> {treasuryBalance} ETH</p>
-
-          <hr/>
-
-          <Proposals provider={provider} dao={dao} proposals={proposals} quorum={quorum} setIsLoading={setIsLoading}/>
-        </>
-      )}
-    </Container>
-  )
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <Create provider={provider} dao={dao} setIsLoading={setIsLoading} />
+            <hr />
+            <div className="treasury-card my-4">
+            <div className="treasury-content">
+              <h3 className="treasury-title">Treasury Balance</h3>
+              <div className="treasury-amount">
+                <strong>{treasuryBalance} ETH</strong>
+              </div>
+            </div>
+          </div>
+            <hr />
+            <Proposals provider={provider} dao={dao} proposals={proposals} setIsLoading={setIsLoading} />
+          </>
+        )}
+      </Container>
+    </>
+  );
 }
 
 export default App;

@@ -1,0 +1,40 @@
+.wave-container {
+    position: fixed;  /* Changed from absolute to fixed to make it stick to the bottom of the viewport */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: -1; /* Make sure it stays behind all elements */
+  }
+  
+  .waves {
+    position: relative;
+    display: block;
+    width: calc(200% + 1.3px); /* Increase width to cover more of the viewport */
+    height: 30vh; /* Increase height to ensure it fills enough space */
+    animation: moveWaves 8s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+  }
+  
+  .wave-group use {
+    animation: bounce 6s ease-in-out infinite;
+  }
+  
+  @keyframes moveWaves {
+    0% {
+      transform: translate3d(-90px, 0, 0);
+    }
+    100% {
+      transform: translate3d(85px, 0, 0);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px); /* Increase bounce for better visual effect */
+    }
+  }
+  
