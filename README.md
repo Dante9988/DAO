@@ -1,6 +1,6 @@
-# Sample Hardhat Project
+# Dragon AI DAO Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This project demonstrates a basic Token and DAO contracts for holders of the token to create Proposal, Vote on Proposal and Finalize. Fully community driven approach
 
 Try running some of the following tasks:
 
