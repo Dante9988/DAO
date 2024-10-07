@@ -51,7 +51,7 @@ async function main() {
     const balanceFunder = await funder.getBalance();
     console.log(`Balance of Funder is: ${balanceFunder}`)
 
-    transaction = await token.transfer(dao.address, tokens(100000))
+    transaction = await token.connect(funder).transfer(dao.address, tokens(100000))
     await transaction.wait();
     transaction = await funder.sendTransaction({ to: dao.address, value: ether(1000), gasLimit: 30000000 })
     await transaction.wait();

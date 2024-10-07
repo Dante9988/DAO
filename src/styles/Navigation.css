@@ -1,0 +1,54 @@
+/* Navigation.css */
+
+/* General styles for the navbar */
+.navbar-custom {
+    background-color: rgba(0, 123, 255, 0.8); /* Slightly transparent blue for visibility and aesthetics */
+    padding: 0.5rem 1rem; /* Comfortable padding around the navbar */
+    border-radius: 10px; /* Soft rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+}
+
+/* Brand styling to ensure it stands out and is consistent */
+.navbar-brand {
+    color: #ffffff; /* White color for contrast against the navbar background */
+    font-weight: bold; /* Bold for emphasis */
+    margin-right: auto; /* Push everything else to the right */
+}
+
+/* Wallet information styles, including button and text display */
+.wallet-info {
+    color: #156ea5; /* A contrasting color that is easy to read */
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for the text background */
+    padding: 0.25rem 0.5rem; /* Padding around the text for better legibility */
+    border-radius: 10px; /* Rounded corners for text block */
+    display: inline-flex; /* Flexbox for aligning items in line */
+    align-items: center; /* Center items vertically */
+    font-size: 0.9rem; /* Appropriate font size for readability */
+    font-family: 'Poppins', sans-serif; /* Consistent font family */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); /* Text shadow for enhancing readability */
+}
+
+/* Styling for buttons, particularly the wallet connection button */
+button.wallet-button {
+    background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent button background */
+    color: #007bff; /* Text color for the button, matches navbar blue */
+    border: none; /* No border for a cleaner appearance */
+    padding: 0.375rem 0.75rem; /* Sufficient padding for button size */
+    border-radius: 10px; /* Consistent rounded corners as navbar */
+    transition: background-color 0.3s; /* Smooth transition for hover effects */
+    display: inline-flex; /* Flexbox for aligning items in the button */
+    align-items: center; /* Center items vertically inside the button */
+    justify-content: center; /* Center items horizontally */
+}
+
+/* Hover effects for better user interaction feedback */
+button.wallet-button:hover, button:hover {
+    background-color: rgba(255, 255, 255, 0.5); /* Lighter background on hover for visibility */
+}
+
+/* Wallet icon styling */
+.wallet-icon {
+    color: #32a4ca; /* Soft blue color for the wallet icon */
+    margin-right: 8px; /* Space between icon and text */
+}

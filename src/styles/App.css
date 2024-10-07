@@ -173,18 +173,50 @@ body {
   }
   
   .navbar {
-    background-color: #007bff;
+    background-color: #3592dd;
     padding: 1rem;
     border-radius: 12px;
   }
   
-  .navbar-brand {
-    color: #fff;
+  .navbar-custom {
+    background-color: rgba(255, 255, 255, 0.95); /* Light background with a bit of transparency */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    backdrop-filter: blur(10px); /* Soft blur effect for background elements */
+  }
+  
+  .navbar-brand, .navbar-text {
+    color: #007bff; /* Ensuring text is visible against a lighter navbar background */
+  }
+  
+  .wallet-info, .navbar-text {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+  
+  .wallet-icon {
+    margin-right: 8px; /* Spacing between icon and text */
+    color: #007bff; /* Icon color to ensure visibility */
+  }
+  
+  /* Enhancing button visibility */
+  button {
+    background-color: #007bff; /* Primary blue for better visibility */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
     font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darker blue on hover for interaction feedback */
   }
   
   .navbar-text {
-    color: #fff;
+    color: #246db7;
   }
 
   .hero-title {
