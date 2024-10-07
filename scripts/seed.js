@@ -43,7 +43,7 @@ async function main() {
         transaction = await token.connect(funder).transfer(investors[i], tokens(200000))
         await transaction.wait();
     }
-    console.log(`Tokens sent to investors: ${investors}`);
+    console.log(`Tokens sent to investors: ${investors}\n`);
 
     const dao = await hre.ethers.getContractAt('DAO', config[chainId].dao.address)
     console.log(`DAO fetched: ${dao.address}\n`)
@@ -53,8 +53,8 @@ async function main() {
 
     transaction = await token.connect(funder).transfer(dao.address, tokens(100000))
     await transaction.wait();
-    transaction = await funder.sendTransaction({ to: dao.address, value: ether(1000), gasLimit: 30000000 })
-    await transaction.wait();
+    // transaction = await funder.sendTransaction({ to: dao.address, value: ether(1000), gasLimit: 30000000 })
+    // await transaction.wait();
     console.log(`Send funds to DAO treasury...\n`)
 
     for (let i = 0; i < 3; i++) {

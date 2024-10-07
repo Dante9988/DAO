@@ -32,17 +32,30 @@ module.exports = {
     }
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    //apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      cc3Testnet: "ABC"
+    },
     customChains: [
       {
-        network: "sepolia",
-        chainId: 11155111,
+        network: "cc3Testnet",
+        chainId: 102031,
         urls: {
-          apiURL: "https://api-sepolia.etherscan.io/api",
-          browserURL: "https://sepolia.etherscan.io/",
+          apiURL: "https://creditcoin-testnet.blockscout.com/api/",
+          browserURL: "https://creditcoin-testnet.blockscout.com/",
         },
       }
     ]
+    // customChains: [
+    //   {
+    //     network: "sepolia",
+    //     chainId: 11155111,
+    //     urls: {
+    //       apiURL: "https://api-sepolia.etherscan.io/api",
+    //       browserURL: "https://sepolia.etherscan.io/",
+    //     },
+    //   }
+    // ]
   },
   sourcify: {
     // Disabled by default

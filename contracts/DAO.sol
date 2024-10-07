@@ -119,7 +119,7 @@ contract DAO {
         require(proposal.votes >= quorum, 'Must reach quorum to finalize proposal.');
         require(proposal.votes > proposal.votesAgainst, 'This proposal in not approved');
 
-        require(address(this).balance >= proposal.amount, 'Contract balance is running low.');
+        require(token.balanceOf(address(this)) >= proposal.amount, 'Contract balance is running low.');
         // mark as fanilized
         proposal.finalized = true;
 

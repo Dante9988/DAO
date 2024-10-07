@@ -53,11 +53,26 @@ import { ethers } from 'ethers';
 import { FaEthereum, FaUserAlt } from 'react-icons/fa';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 
-const Create = ({ provider, dao, setIsLoading }) => {
+const Create = ({ provider, dao, setIsLoading, addNewProposal }) => {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState(0);
     const [address, setAddress] = useState('');
     const [isWaiting, setIsWaiting] = useState(false);
+
+    // const createHandler = async (e) => {
+    //     e.preventDefault();
+    //     setIsWaiting(true);
+    //     try {
+    //         const signer = await provider.getSigner();
+    //         const formattedAmount = ethers.utils.parseUnits(amount.toString(), 'ether');
+    //         const transaction = await dao.connect(signer).createProposal(name, formattedAmount, address);
+    //         await transaction.wait();
+    //         console.log(`Proposal created at txn hash: ${transaction.hash}`);
+    //     } catch (error) {
+    //         window.alert('User rejected or error occurred...', error);
+    //     }
+    //     setIsLoading(true);
+    // }
 
     const createHandler = async (e) => {
         e.preventDefault();
@@ -68,10 +83,22 @@ const Create = ({ provider, dao, setIsLoading }) => {
             const transaction = await dao.connect(signer).createProposal(name, formattedAmount, address);
             await transaction.wait();
             console.log(`Proposal created at txn hash: ${transaction.hash}`);
+            
+            // Update proposals list in parent
+            addNewProposal({
+                name,
+                amount: formattedAmount,
+                address,
+                id: transaction.hash, // Assuming transaction hash can serve as a unique ID
+                finalized: false,
+                votes: 0
+            });
+            
         } catch (error) {
             window.alert('User rejected or error occurred...', error);
         }
-        setIsLoading(true);
+        setIsWaiting(false);
+        setIsLoading(false);
     }
 
     return (
@@ -95,7 +122,7 @@ const Create = ({ provider, dao, setIsLoading }) => {
                             <span className="input-group-text"><AiOutlineDollarCircle /></span>
                             <Form.Control
                                 type='number'
-                                placeholder='Amount (ETH)'
+                                placeholder='Amount (DRGN)'
                                 className='form-control'
                                 onChange={(e) => setAmount(e.target.value)}
                                 required

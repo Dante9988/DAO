@@ -119,7 +119,6 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
             const status = {};
             for (let i = 0; i < proposals; i++) {
                 const hasVoted = await dao.hasVoted(address, proposals[i].id);
-                console.log('WTF',hasVoted)
                 status[proposals[i].id] = hasVoted;
             }
             setVotedStatus(status);
@@ -132,6 +131,7 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
 
     return (
         <div className='my-4'>
+            {console.log(proposals)}
             {proposals.map((proposal, index) => (
                 <div key={index} className="proposal-card">
                     <div className="proposal-header">

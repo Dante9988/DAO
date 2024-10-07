@@ -113,7 +113,6 @@ describe('DAO', () => {
                 expect(proposal.name).to.eq('Proposal 1')
                 expect(proposal.amount).to.eq(ether(100))
                 expect(proposal.recipient).to.eq(recipient.address)
-
             })
 
             it('emits proposal event', async () => {

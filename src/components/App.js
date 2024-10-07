@@ -63,6 +63,10 @@ function App() {
     loadBlockchainData(provider);
   };
 
+  const addNewProposal = (newProposal) => {
+    setProposals((prevProposals) => [...prevProposals, newProposal]);
+  };
+
   // const loadBlockchainData = async () => {
   //   // Initiate provider
   //   let provider;
@@ -187,7 +191,7 @@ function App() {
           <Loading />
         ) : (
           <>
-            <Create provider={provider} dao={dao} setIsLoading={setIsLoading} />
+            <Create provider={provider} dao={dao} setIsLoading={setIsLoading} addNewProposal={addNewProposal}/>
             <hr />
             <div className="treasury-card my-4">
               <div className="treasury-content">
