@@ -31,15 +31,20 @@ function App() {
 
   const loadBlockchainData = async () => {
     // Initiate provider
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    setProvider(provider)
+    let provider;
+    if (typeof window.ethereum !== 'undefined') {
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(provider);
+    } else {
+      console.error('Ethereum provider is not available. Check if MetaMask is installed.');
+    }
     const { chainId } = await provider.getNetwork()
     block = await provider.getBlockNumber()
 
     // Initiate contracts
     const dao = new ethers.Contract(config[chainId].dao.address, DAO_ABI, provider)
     setDao(dao);
-    const token = new ethers.Contract(config[chainId].token.address, TOKEN_ABI)
+    const token = new ethers.Contract(config[chainId].token.address, TOKEN_ABI, provider)
 
     setTreasuryBalance(
       ethers.utils.formatUnits(
